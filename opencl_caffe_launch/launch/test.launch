@@ -23,21 +23,13 @@ limitations under the License.
 
   <include file="$(find opencl_caffe_launch)/launch/includes/manager.launch">
     <arg name="name"                    value="$(arg manager)" />
-    <arg name="num_worker_threads"      value="8" />
+    <arg name="num_worker_threads"      value="4" />
   </include>
+
   <include file="$(find opencl_caffe_launch)/launch/includes/nodelet.launch">
     <arg name="name"                    value="$(arg nodelet)" />
     <arg name="manager"                 value="$(arg manager)" />
     <arg name="input_topic"             value="$(arg input_topic)" />
     <arg name="output_topic"            value="$(arg output_topic)" />
-  </include>
-  <include file="$(find opencl_caffe_launch)/launch/includes/viewer.launch">
-    <arg name="name"                    value="$(arg viewer)" />
-    <arg name="input_topic"             value="$(arg input_topic)" />
-    <arg name="output_topic"            value="$(arg output_topic)" />
-  </include>
-  <include file="$(find realsense2_camera)/launch/rs_camera.launch">
-    <arg name="color_width"             value="$(arg color_width)" />
-    <arg name="color_height"            value="$(arg color_height)" />
   </include>
 </launch>

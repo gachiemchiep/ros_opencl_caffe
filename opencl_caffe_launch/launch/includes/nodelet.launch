@@ -16,7 +16,7 @@ limitations under the License.
   <arg name="name"                      default="opencl_caffe_nodelet" />
   <arg name="input_topic"               default="/usb_cam/image_raw" />
   <arg name="output_topic"              default="inference" />
-  <arg name="param_file"                default="$(find opencl_caffe_launch)/launch/includes/default.yaml" />
+  <arg name="param_file"                default="$(find opencl_caffe_launch)/config/default.yaml" />
   <node pkg="nodelet"
     type="nodelet"
     name="$(arg name)"

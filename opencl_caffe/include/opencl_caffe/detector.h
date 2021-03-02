@@ -42,8 +42,8 @@ struct DetectorConfig
   // OpenCV use BGR
   bool swapRB = true;     // Indicate that model works with RGB input images instead BGR ones.
   cv::Size inSize = cv::Size(416, 416);      // Preprocess input image that has size (w, h)
-  int backend = cv::dnn::Backend::DNN_BACKEND_CUDA;  // Use cuda as default backend
-  int target = cv::dnn::Target::DNN_TARGET_CUDA;    // use cuda 32 as default target
+  int backend = cv::dnn::DNN_BACKEND_CUDA;  // Use cuda as default backend
+  int target = cv::dnn::DNN_TARGET_CUDA;    // use cuda 32 as default target
 };
 
 /**

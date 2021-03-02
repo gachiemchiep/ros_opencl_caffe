@@ -39,8 +39,6 @@ void Nodelet::onInit()
   {
     ROS_WARN("param labels_path not set, use default");
   }
-
-
   loadResources(config);
   pub_ = getNodeHandle().advertise<object_msgs::ObjectsInBoxes>("inference", 1);
 }

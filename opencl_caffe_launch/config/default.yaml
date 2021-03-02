@@ -1,0 +1,3 @@
+net_config_path:  "/home/jil/workspace/catkin_ws/src/intel/yolo/yolov4.cfg"
+weights_path:     "/home/jil/workspace/catkin_ws/src/intel/yolo/yolov4.weights"
+labels_path:      "/home/jil/workspace/catkin_ws/src/intel/yolo/object_detection_classes_pascal_voc.txt"

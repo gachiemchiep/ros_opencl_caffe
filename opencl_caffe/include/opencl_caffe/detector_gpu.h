@@ -46,7 +46,7 @@ private:
   /** network */
   cv::dnn::Net net_;
   opencl_caffe::DetectorConfig config_;
-  std::vector<std::string> outNames_; // name of output layer
+  std::vector<cv::String> outNames_; // name of output layer
   std::vector<std::string> classes_; //
   /**
    * Run inference to infer all objects in image.
@@ -64,7 +64,7 @@ private:
 
 public:
   /** Constructor*/
-  DetectorGpu();
+  DetectorGpu() = default;
   /** Deafult deconstructor */
   ~DetectorGpu() = default;
   /**

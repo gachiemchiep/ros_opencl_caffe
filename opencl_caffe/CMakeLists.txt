@@ -27,8 +27,7 @@ find_package(catkin REQUIRED COMPONENTS
   pluginlib
   nodelet
 )
-# find_package(OpenCV 4.5.1 REQUIRED PATHS "/usr/local/lib")
-find_package(OpenCV 3.2 REQUIRED PATHS "/home/jil/opt/opencv/opencv.build")
+find_package(OpenCV 4.5 REQUIRED)
 find_package(Boost REQUIRED)
 
 #Ignore sign compare warnings in clCaffe

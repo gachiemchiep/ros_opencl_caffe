@@ -1,3 +1,27 @@
+
+# Compiling
+
+
+```bash
+# Follow these 2 links to compile this project with lastest version of opencv (4.5)
+# https://github.com/ros/catkin/issues/1004#issuecomment-481414097
+# https://answers.ros.org/question/318146/using-opencv-dnn-module-with-ros/
+# need to build cv_bridge and image transport plugins with opencv 4.5
+git clone https://github.com/ros-perception/vision_opencv src/vision_opencv
+git clone https://github.com/ros-perception/image_transport_plugins.git src/image_transport_plugins
+catkin_make
+```
+
+
+
+
+
+
+
+
+
+
+
 # ros_opencl_caffe
 # Warning: This repo is deprecated. For latest ROS wrapper for Intel GPU, please refer to our project ros_openvino_toolkit. 
 # See: https://github.com/intel/ros_openvino_toolkit!!

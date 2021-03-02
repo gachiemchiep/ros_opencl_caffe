@@ -14,6 +14,7 @@
 
 cmake_minimum_required(VERSION 2.8.3)
 project(opencl_caffe)
+add_compile_options(-std=c++11)
 
 find_package(catkin REQUIRED COMPONENTS
   roslib
@@ -26,7 +27,9 @@ find_package(catkin REQUIRED COMPONENTS
   pluginlib
   nodelet
 )
-find_package(OpenCV REQUIRED)
+# find_package(OpenCV 4.5.1 REQUIRED PATHS "/usr/local/lib")
+find_package(OpenCV 3.2 REQUIRED PATHS "/home/jil/opt/opencv/opencv.build")
+find_package(Boost REQUIRED)
 
 #Ignore sign compare warnings in clCaffe
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-sign-compare")
@@ -74,18 +77,18 @@ endif()
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES opencl_caffe
-  CATKIN_DEPENDS roslib roscpp sensor_msgs std_msgs object_msgs
+  CATKIN_DEPENDS roslib roscpp sensor_msgs std_msgs object_msgs 
+  DEPENDS Boost OpenCV
 )
 
 include_directories(
   include
-  ${catkin_INCLUDE_DIRS}
-  /opt/clCaffe/include
-  /opt/clCaffe/build/include
+  ${OpenCV_INCLUDE_DIRS}
+  ${Boost_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS} 
 )
 
 link_directories(
-  /opt/clCaffe/build/lib
 )
 
 add_executable(opencl_caffe_srv
@@ -104,14 +107,13 @@ add_dependencies(opencl_caffe_nodelet ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catk
 target_link_libraries(opencl_caffe_srv
   ${catkin_LIBRARIES}
   ${OpenCV_LIBS}
-  caffe
-  glog
+  ${Boost_LIBRARIES}
 )
 
 target_link_libraries(opencl_caffe_nodelet
   ${catkin_LIBRARIES}
   ${OpenCV_LIBS}
-  caffe
+  ${Boost_LIBRARIES}
 )
 
 install(TARGETS opencl_caffe_srv opencl_caffe_nodelet
@@ -128,24 +130,24 @@ install(FILES nodelet_plugins.xml
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
-if(CATKIN_ENABLE_TESTING)
-  # static code check
-  find_package(roslint REQUIRED)
-  roslint_cpp()
-  roslint_add_test()
+# if(CATKIN_ENABLE_TESTING)
+#   # static code check
+#   find_package(roslint REQUIRED)
+#   roslint_cpp()
+#   roslint_add_test()
 
-  # run_tests
-  # catkin_add_gtest(unittest_detector tests/unittest_detector.cpp)
-  # target_link_libraries(unittest_detector ${catkin_LIBRARIES} opencl_caffe_nodelet pthread ${GTEST_LIBRARIES} ${UNITEST_LIBRARIES})
-  # catkin_add_gtest(unittest_srv tests/unittest_srv.cpp)
-  # target_link_libraries(unittest_srv ${catkin_LIBRARIES} opencl_caffe_srv pthread ${GTEST_LIBRARIES} ${UNITEST_LIBRARIES})
+#   # run_tests
+#   # catkin_add_gtest(unittest_detector tests/unittest_detector.cpp)
+#   # target_link_libraries(unittest_detector ${catkin_LIBRARIES} opencl_caffe_nodelet pthread ${GTEST_LIBRARIES} ${UNITEST_LIBRARIES})
+#   # catkin_add_gtest(unittest_srv tests/unittest_srv.cpp)
+#   # target_link_libraries(unittest_srv ${catkin_LIBRARIES} opencl_caffe_srv pthread ${GTEST_LIBRARIES} ${UNITEST_LIBRARIES})
 
-  # rostest
-  find_package(rostest REQUIRED)
-  add_executable(unittest_detector tests/unittest_detector.cpp)
-  target_link_libraries(unittest_detector ${catkin_LIBRARIES} opencl_caffe_nodelet pthread ${GTEST_LIBRARIES} ${UNITEST_LIBRARIES})
-  add_executable(unittest_srv tests/unittest_srv.cpp)
-  target_link_libraries(unittest_srv ${catkin_LIBRARIES} pthread ${GTEST_LIBRARIES} ${UNITEST_LIBRARIES})
-  add_rostest(tests/detector.test)
-  add_rostest(tests/service.test)
-endif()
+#   # rostest
+#   find_package(rostest REQUIRED)
+#   add_executable(unittest_detector tests/unittest_detector.cpp)
+#   target_link_libraries(unittest_detector ${catkin_LIBRARIES} opencl_caffe_nodelet pthread ${GTEST_LIBRARIES} ${UNITEST_LIBRARIES})
+#   add_executable(unittest_srv tests/unittest_srv.cpp)
+#   target_link_libraries(unittest_srv ${catkin_LIBRARIES} pthread ${GTEST_LIBRARIES} ${UNITEST_LIBRARIES})
+#   add_rostest(tests/detector.test)
+#   add_rostest(tests/service.test)
+# endif()

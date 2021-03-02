@@ -18,6 +18,9 @@
 #define OPENCL_CAFFE_DETECTOR_H
 
 #include <string>
+#include <opencv2/core.hpp>
+#include <opencv2/dnn.hpp>
+#include <opencv2/imgproc.hpp>
 #include <image_transport/image_transport.h>
 #include <object_msgs/ObjectsInBoxes.h>
 
@@ -37,11 +40,22 @@ struct DetectorConfig
   float thr = 0.5;        // Confidence threshold.
   float nms = 0.4;        // Non-maximum suppression threshold.
   // OpenCV use BGR
-  bool swapRB = True;     // Indicate that model works with RGB input images instead BGR ones.
-  cv::Size inpWidth = cv::Size(416, 416);      // Preprocess input image that has size (w, h)
-  int backend = dnn::DNN_BACKEND_CUDA;  // Use cuda as default backend
-  int target = dnn::DNN_TARGET_CUDA;    // use cuda 32 as default target
+  bool swapRB = true;     // Indicate that model works with RGB input images instead BGR ones.
+  cv::Size inSize = cv::Size(416, 416);      // Preprocess input image that has size (w, h)
+  int backend = cv::dnn::Backend::DNN_BACKEND_CUDA;  // Use cuda as default backend
+  int target = cv::dnn::Target::DNN_TARGET_CUDA;    // use cuda 32 as default target
 };
+
+/**
+ * postprocess result
+*/
+struct DetectorRet
+{
+  std::vector<int> classIds;
+  std::vector<float> confidences;
+  std::vector<cv::Rect> boxes;
+};
+
 /** @class Detector
  * @brief Base class for detecting.
  * This class define a common interface of nueral network inference.

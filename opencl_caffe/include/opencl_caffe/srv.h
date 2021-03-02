@@ -58,7 +58,7 @@ public:
    * @param[in]   weights_path      Neural network weights file path
    * @param[in]   labels_path       File path of labels of network output classes
    */
-  void loadResources(const std::string net_config_path, const std::string weights_path, const std::string labels_path);
+  void loadResources(const opencl_caffe::DetectorConfig& config);
 };
 }  // namespace opencl_caffe
 

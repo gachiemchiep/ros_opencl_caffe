@@ -26,21 +26,22 @@ namespace opencl_caffe
 void Nodelet::onInit()
 {
   ros::NodeHandle pnh = getPrivateNodeHandle();
-  std::string net_config_path, weights_path, labels_path;
-  if (!pnh.getParam("net_config_path", net_config_path))
+  opencl_caffe::DetectorConfig config;
+  if (!pnh.getParam("net_config_path", config.config))
   {
     ROS_WARN("param net_cfg_path not set, use default");
   }
-  if (!pnh.getParam("weights_path", weights_path))
+  if (!pnh.getParam("weights_path", config.model))
   {
     ROS_WARN("param weights_path not set, use default");
   }
-  if (!pnh.getParam("labels_path", labels_path))
+  if (!pnh.getParam("labels_path", config.classes))
   {
     ROS_WARN("param labels_path not set, use default");
   }
 
-  loadResources(net_config_path, weights_path, labels_path);
+
+  loadResources(config);
   pub_ = getNodeHandle().advertise<object_msgs::ObjectsInBoxes>("inference", 1);
 }
 
@@ -57,13 +58,12 @@ void Nodelet::cbImage(const sensor_msgs::ImagePtr image_msg)
   }
 }
 
-void Nodelet::loadResources(const std::string net_config_path, const std::string weights_path,
-                            const std::string labels_path)
+void Nodelet::loadResources(const opencl_caffe::DetectorConfig& config)
 {
   detector_.reset(new DetectorGpu());
   sub_.shutdown();
 
-  if (detector_->loadResources(net_config_path, weights_path, labels_path))
+  if (detector_->loadResources(config))
   {
     sub_ = getNodeHandle().subscribe("/usb_cam/image_raw", 1, &Nodelet::cbImage, this);
   }

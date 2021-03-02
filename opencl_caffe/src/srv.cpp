@@ -24,21 +24,21 @@ namespace opencl_caffe
 {
 Srv::Srv(ros::NodeHandle& n)
 {
-  std::string net_config_path, weights_path, labels_path;
-  if (!n.getParam("net_config_path", net_config_path))
+  opencl_caffe::DetectorConfig config;
+  if (!n.getParam("net_config_path", config.config))
   {
     ROS_WARN("param net_cfg_path not set, use default");
   }
-  if (!n.getParam("weights_path", weights_path))
+  if (!n.getParam("weights_path", config.model))
   {
     ROS_WARN("param weights_path not set, use default");
   }
-  if (!n.getParam("labels_path", labels_path))
+  if (!n.getParam("labels_path", config.classes))
   {
     ROS_WARN("param labels_path not set, use default");
   }
 
-  loadResources(net_config_path, weights_path, labels_path);
+  loadResources(config);
   service_ = n.advertiseService("run_inference", &Srv::handleService, this);
 }
 
@@ -66,11 +66,10 @@ bool Srv::handleService(object_msgs::DetectObject::Request& req, object_msgs::De
   return true;
 }
 
-void Srv::loadResources(const std::string net_config_path, const std::string weights_path,
-                        const std::string labels_path)
+void Srv::loadResources(const opencl_caffe::DetectorConfig& config)
 {
   detector_.reset(new DetectorGpu());
-  if (!detector_->loadResources(net_config_path, weights_path, labels_path))
+  if (!detector_->loadResources(config))
   {
     ROS_FATAL("Load resource failed.");
     ros::shutdown();
